@@ -49,22 +49,29 @@ netlify/
 
 - **Hosting:** Netlify (static site + Functions)
 - **Storage:** Netlify Blobs: a `profiles` store (one JSON record per username) and a `feeds` store (RSS cache)
-- **AI:** Anthropic Claude via the official SDK. Netlify AI Gateway supplies credentials automatically on credit-based plans, or you can bring your own key.
+- **AI:** any OpenAI-compatible provider (free open-weight models on Groq by default), or Anthropic Claude (via your own key or Netlify AI Gateway)
 
 ## Deploy your own
 
 1. Click **Deploy to Netlify** above, or fork the repo and import it in Netlify.
-2. Set up AI, choosing one of:
-   - **Netlify AI Gateway** (no key needed). Your Netlify team must be on a [credit-based plan](https://docs.netlify.com/build/ai-gateway/overview/), including the new Free plan. The gateway activates after the first production deploy, so redeploy once.
-   - **Your own Anthropic key.** Add `ANTHROPIC_API_KEY` under *Project configuration → Environment variables* with the scope set to Functions, then redeploy.
+2. Set up AI, choosing one of the options below. Add the variable under *Project configuration → Environment variables* with the scope set to Functions, then redeploy.
+   - **Free, open-weight (recommended):** create a free key at [console.groq.com](https://console.groq.com) (no card needed) and set `GROQ_API_KEY`. It uses `openai/gpt-oss-120b`, with `llama-3.3-70b-versatile` as a fallback.
+   - **Any OpenAI-compatible API** (OpenRouter `:free` models, Together, a self-hosted Ollama or vLLM…): set `LLM_API_KEY`, `LLM_BASE_URL` and `LLM_MODELS`.
+   - **Anthropic Claude:** set `ANTHROPIC_API_KEY`. Or use [Netlify AI Gateway](https://docs.netlify.com/build/ai-gateway/overview/) with no key, which needs a credit-based Netlify plan.
 3. Optional: add a custom domain under *Domain management*. Portfolio URLs follow it automatically (`yourdomain.com/username`).
 
 ### Environment variables
 
-| Variable | Required | Purpose |
-|---|---|---|
-| `ANTHROPIC_API_KEY` | Only without AI Gateway | Your Anthropic API key |
-| `PMFOLIO_MODELS` | No | Comma-separated model order, e.g. `claude-sonnet-5-5,claude-haiku-5-5` |
+| Variable | Purpose |
+|---|---|
+| `GROQ_API_KEY` | Use Groq's free open-weight models (default provider when set) |
+| `LLM_API_KEY` / `LLM_BASE_URL` | Any OpenAI-compatible endpoint, e.g. `https://openrouter.ai/api/v1` (default: Groq) |
+| `LLM_MODELS` | Comma-separated models to try in order, e.g. `openai/gpt-oss-120b,llama-3.3-70b-versatile` |
+| `LLM_MAX_INPUT_CHARS` | Characters of resume text sent to open models (default 18000, sized for free-tier token limits) |
+| `ANTHROPIC_API_KEY` | Use Claude instead (only when no `LLM_API_KEY`/`GROQ_API_KEY` is set) |
+| `PMFOLIO_MODELS` | Claude models to try in order |
+
+The order of precedence is `LLM_API_KEY`/`GROQ_API_KEY`, then Anthropic credentials. If none are set, the "Start blank" option still works.
 
 ## Local development
 
@@ -74,7 +81,7 @@ npx netlify-cli link        # link to your Netlify project
 npx netlify-cli dev         # http://localhost:8888
 ```
 
-Blobs use a local sandbox in dev. AI generation needs either the gateway (after a production deploy) or `ANTHROPIC_API_KEY` in your environment.
+Blobs use a local sandbox in dev. For AI generation, put `GROQ_API_KEY` (or another provider's key) in your environment.
 
 ## Roadmap
 
