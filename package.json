@@ -1,0 +1,31 @@
+{
+  "name": "pmfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Effortless portfolios for product managers",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.70.0",
+    "@netlify/blobs": "^10.0.0",
+    "@netlify/functions": "^4.0.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adityanataraj/pmfolio.git"
+  },
+  "homepage": "https://pmfolio-app.netlify.app",
+  "keywords": [
+    "portfolio",
+    "product-manager",
+    "netlify",
+    "ai",
+    "resume"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "netlify dev"
+  }
+}

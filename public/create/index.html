@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create your portfolio · pmfolio</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='46' fill='%23D9480F'/><text x='50' y='66' font-size='48' text-anchor='middle' fill='white' font-family='Georgia'>p</text></svg>">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<header class="topnav scrolled"><div class="wrap" style="max-width:none">
+  <a class="logo" href="/">pm<span>folio</span></a>
+  <nav id="topActions"><a class="hide-sm" href="/demo" target="_blank">See example</a></nav>
+</div></header>
+
+<!-- STEP 1: import -->
+<section id="importView" class="import">
+  <p class="kicker">Step 1 of 2</p>
+  <h1 class="display" style="font-size:clamp(34px,5vw,52px)">Start with what you have.</h1>
+  <p class="lede">Your LinkedIn PDF export works best. Nothing is stored until you publish.</p>
+
+  <div class="tabs" role="tablist">
+    <button class="on" data-tab="upload">Upload PDF</button>
+    <button data-tab="paste">Paste text</button>
+    <button data-tab="blank">Start blank</button>
+  </div>
+
+  <div data-pane="upload">
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept=".pdf,.txt,.md,application/pdf,text/plain" hidden>
+      <div class="big">Drop your LinkedIn PDF or resume</div>
+      <p>or click to browse · PDF or .txt</p>
+      <div class="file-ok" id="fileOk" hidden></div>
+    </label>
+    <div class="tip"><b>Get your LinkedIn PDF:</b> open your LinkedIn profile → <b>Resources</b> (or <b>More</b>) → <b>Save to PDF</b>.</div>
+  </div>
+
+  <div data-pane="paste" hidden>
+    <textarea class="paste" id="pasteText" placeholder="Paste your resume, LinkedIn 'About' and 'Experience' sections, or any notes about products you've shipped…"></textarea>
+  </div>
+
+  <div data-pane="blank" hidden>
+    <div class="card"><h3 style="margin-top:0">Fill it in yourself</h3><p>Skip the AI and go straight to the editor with an empty template. You can add products, metrics and experience by hand.</p></div>
+  </div>
+
+  <label class="field" style="margin-top:22px"><span>Newsletter or blog (optional)</span>
+    <input type="text" id="feedInput" placeholder="yourname.substack.com or medium.com/@you">
+    <small class="hint">Your latest posts will show on your page and refresh automatically.</small>
+  </label>
+
+  <div class="gen-row">
+    <button class="btn primary" id="goBtn">Generate my portfolio →</button>
+    <span id="resumeDraft"></span>
+  </div>
+  <div class="err" id="importErr" hidden></div>
+</section>
+
+<!-- STEP 2: editor -->
+<section id="editorView" hidden>
+  <div class="builder-shell">
+    <aside class="editor" id="editor">
+      <div class="publish-box">
+        <p class="kicker" id="stepLabel">Step 2 of 2 · Edit &amp; publish</p>
+        <label class="field" style="margin-top:10px"><span>Your link</span>
+          <div class="url-input"><span id="hostLabel">pmfolio/</span><input id="username" placeholder="your-name" autocomplete="off" spellcheck="false"></div>
+        </label>
+        <div class="avail" id="avail"></div>
+        <button class="btn accent" id="publishBtn" style="width:100%;margin-top:8px">Publish portfolio</button>
+        <div class="err" id="pubErr" hidden></div>
+      </div>
+      <div id="fields"></div>
+      <button class="btn sm" id="restartBtn" style="margin-top:8px">↺ Start over with a different file</button>
+    </aside>
+    <div class="preview-pane">
+      <div class="preview-bar"><span>Live preview <span id="feedNote"></span></span>
+        <div class="device-toggle"><button class="on" data-dev="desktop">Desktop</button><button data-dev="mobile">Mobile</button></div></div>
+      <div class="frame-wrap"><iframe id="preview" title="Portfolio preview" sandbox="allow-scripts allow-modals allow-popups"></iframe></div>
+    </div>
+  </div>
+</section>
+
+<div class="loading" id="loading"><div><div class="spinner"></div><div class="msg" id="loadingMsg">Reading your resume…</div><p style="color:var(--muted)">This usually takes 20–40 seconds.</p></div></div>
+
+<div class="modal" id="doneModal"><div class="box">
+  <p class="kicker">🎉 You're live</p>
+  <h3 id="doneTitle">Your portfolio is published</h3>
+  <p style="color:var(--muted);margin:0">Share it on LinkedIn, in your email signature, or with recruiters.</p>
+  <div class="copy-row"><input class="input" id="liveUrl" readonly><button class="btn sm primary" data-copy="liveUrl">Copy</button></div>
+  <div id="keyBlock">
+    <div class="warn"><b>Save your private edit link.</b> It's the only way to edit this portfolio later — there's no password. It's also saved in this browser.</div>
+    <div class="copy-row"><input class="input" id="editUrl" readonly><button class="btn sm" data-copy="editUrl">Copy</button></div>
+  </div>
+  <div style="display:flex;gap:10px;margin-top:22px;flex-wrap:wrap">
+    <a class="btn primary" id="viewLive" target="_blank">View my portfolio ↗</a>
+    <button class="btn" id="keepEditing">Keep editing</button>
+  </div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script type="module" src="/create.js"></script>
+</body>
+</html>
